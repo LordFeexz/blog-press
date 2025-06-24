@@ -15,7 +15,11 @@ function ToWaitlistBtn({ lang }: LangProps) {
   }, []);
 
   return (
-    <Button onClick={onClickHandler} size="lg" className="h-12 px-8 flex-1">
+    <Button
+      onClick={onClickHandler}
+      size="lg"
+      className="h-12 px-8 flex-1 cursor-pointer hover:scale-99 shadow hover:shadow-md transition-all duration-300"
+    >
       {lang === LANG.ID ? "Daftar Menunggu" : "Join Waitlist"}
       <ArrowRight className="ml-2 h-5 w-5" />
     </Button>
