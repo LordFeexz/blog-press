@@ -25,8 +25,8 @@ export default function GlobalError({ reset }: ErrorProps) {
                 Oops! Something went wrong
               </h1>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
-                We're sorry, but an unexpected error occurred. Our team has been
-                notified and we're working to fix it.
+                We&apos;re sorry, but an unexpected error occurred. Our team has
+                been notified and we&apos;re working to fix it.
               </p>
               <div className="space-y-4">
                 <Button onClick={reset} className="w-full">

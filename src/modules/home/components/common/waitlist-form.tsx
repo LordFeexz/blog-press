@@ -39,7 +39,6 @@ function WaitlistForm({ lang }: LangProps) {
   return (
     <form
       aria-busy={pending}
-      aria-disabled={pending}
       action={formAction}
       className="space-y-6"
       id={WAITLIST_FORM_ID}

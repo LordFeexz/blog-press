@@ -10,8 +10,8 @@ export default function NotFound() {
           404 - Page Not Found
         </h1>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
-          Oops! The page you're looking for doesn't exist. It might have been
-          moved or deleted.
+          Oops! The page you&apos;re looking for doesn&apos;t exist. It might
+          have been moved or deleted.
         </p>
         <div className="space-y-4">
           <BackBtn />
