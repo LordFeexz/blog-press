@@ -5,6 +5,7 @@ import "pg";
 import "pg-hstore";
 import { Admin } from "./admin";
 import { Waitlist } from "./waitlist";
+import { Referral } from "./referral";
 
 let sequelize: Sequelize;
 
@@ -41,10 +42,12 @@ if (process.env.NODE_ENV === "production") {
   );
 }
 
-let models = [Admin, Waitlist];
+const models = [Admin, Waitlist, Referral];
 models.forEach((model) => model.initialize(sequelize));
 
 Admin.hasMany(Waitlist, { foreignKey: "referral" });
 Waitlist.belongsTo(Admin, { foreignKey: "referral" });
+Admin.hasOne(Referral, { foreignKey: "referrer" });
+Referral.belongsTo(Admin, { foreignKey: "referrer" });
 
-export { sequelize as DB, Admin, Waitlist };
+export { sequelize as DB, Admin, Waitlist, Referral };

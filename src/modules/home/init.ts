@@ -16,7 +16,7 @@ export default function Init() {
         ?.scrollIntoView({ behavior: "smooth", block: "center" });
       setReferralCode(referalCode);
     }
-  }, [referalCode]);
+  }, [referalCode, setReferralCode]);
 
   return null;
 }
