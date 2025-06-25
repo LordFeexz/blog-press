@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "postgres",
-    "password": "qwertyui",
+    "password": "postgres",
     "database": "blog-press",
     "host": "127.0.0.1",
     "dialect": "postgres"
