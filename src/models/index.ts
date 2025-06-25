@@ -50,4 +50,4 @@ Waitlist.belongsTo(Admin, { foreignKey: "referral" });
 Admin.hasOne(Referral, { foreignKey: "referrer" });
 Referral.belongsTo(Admin, { foreignKey: "referrer" });
 
-export { sequelize as DB, Admin, Waitlist };
+export { sequelize as DB, Admin, Waitlist, Referral };

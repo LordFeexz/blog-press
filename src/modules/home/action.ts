@@ -1,11 +1,10 @@
 "use server";
 
-import { Admin, Waitlist } from "@/models";
+import { Admin, Waitlist, Referral } from "@/models";
 import {
   EARLY_BIRD_REGISTER_SCHEMA,
   type EarlyBirdRegisterState,
 } from "./schema";
-import { Referral } from "@/models/referral";
 
 export async function earlyBirdRegisterAction(
   prevState: EarlyBirdRegisterState,
