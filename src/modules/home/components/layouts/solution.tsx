@@ -1,6 +1,10 @@
+"use client";
+
 import { LANG } from "@/enums/global";
 import type { LangProps } from "@/interfaces/component";
-import { CheckCircle, Target } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Target, Zap } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BENEFITS_EN,
   BENEFITS_ID,
@@ -9,9 +13,90 @@ import {
 } from "../../constant";
 import { getSolutionDictionary } from "../../i18n";
 import SolutionPointCard from "../common/solution-point-card";
+import useMount from "@/hooks/use-mount";
+import dynamic from "next/dynamic";
+const TypewriterContent = dynamic(
+  () => import("../common/type-writer-content"),
+  { ssr: false }
+);
+const StaticContent = dynamic(() => import("../common/static-content"), {
+  ssr: false,
+});
+const LoadingState = dynamic(() => import("../common/loading-state"), {
+  ssr: false,
+});
 
 export default function Solution({ lang }: LangProps) {
   const t = getSolutionDictionary(lang);
+  const [uiState, setUiState] = useState<
+    "idle" | "researching" | "loading" | "typing" | "finished"
+  >("idle");
+  const isClient = useMount();
+
+  useEffect(() => {
+    if (isClient) {
+      const storedState = localStorage.getItem("contentGenerated");
+      if (storedState === "true") {
+        setUiState("finished");
+      }
+    }
+  }, [isClient]);
+
+  const handleGenerate = () => {
+    setUiState("researching");
+    setTimeout(() => {
+      setUiState("loading");
+      setTimeout(() => {
+        setUiState("typing");
+      }, 1500);
+    }, 1500);
+  };
+
+  const handleTypingFinish = () => {
+    localStorage.setItem("contentGenerated", "true");
+    setUiState("finished");
+  };
+
+  const renderContent = useMemo(() => {
+    switch (uiState) {
+      case "researching":
+        return <LoadingState text={t.researchingText} />;
+      case "loading":
+        return <LoadingState text={t.loadingText} />;
+      case "typing":
+        return (
+          <TypewriterContent
+            content={t.generatedContent}
+            onFinished={handleTypingFinish}
+          />
+        );
+      case "finished":
+        return (
+          <>
+            <StaticContent content={t.generatedContent} />
+            <div className="mt-4 flex items-center text-sm text-green-600 dark:text-green-400">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              {t.result}
+            </div>
+          </>
+        );
+      case "idle":
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-muted rounded-lg min-h-[300px]">
+            <div className="text-muted-foreground mb-4">{t.idleTitle}</div>
+            <Button
+              className="hover:scale-99 transition-all duration-300 shadow hover:shadow-md cursor-pointer hover:opacity-90"
+              onClick={handleGenerate}
+            >
+              <Zap className="w-4 h-4 mr-2" />
+              {t.buttonText}
+            </Button>
+          </div>
+        );
+    }
+  }, [uiState, t]);
+
   return (
     <section id="home-solution" className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,13 +106,10 @@ export default function Solution({ lang }: LangProps) {
               <Target className="w-4 h-4 mr-2" />
               {t.badge}
             </div>
-
             <h2 className="text-3xl sm:text-4xl font-bold mb-6">{t.title}</h2>
-
             <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
               {t.subtitle}
             </p>
-
             <ul className="space-y-4 mb-8">
               {(lang === LANG.ID ? BENEFITS_ID : BENEFITS_EN).map(
                 (benefit, index) => (
@@ -38,7 +120,6 @@ export default function Solution({ lang }: LangProps) {
                 )
               )}
             </ul>
-
             <div className="flex items-center space-x-4">
               {(lang === LANG.ID ? SOLUTION_POINTS_ID : SOLUTION_POINTS_EN).map(
                 (val) => (
@@ -61,26 +142,32 @@ export default function Solution({ lang }: LangProps) {
                     &quot;topic&quot;: &quot;Digital Marketing&quot;,
                   </div>
                   <div className="ml-4">
-                    &quot;keywords&quot;: [&quot;SEO&quot;, &quot;content&quot;]
+                    &quot;keywords&quot;: [&quot;SEO&quot;,
+                    &quot;content&quot;],
                   </div>
+                  <div className="ml-4">&quot;fields&quot;: &#123;</div>
+                  <div className="ml-8">
+                    &quot;title&quot;: &#123; &quot;maxChars&quot;: 100 &#125;,
+                  </div>
+                  <div className="ml-8">
+                    &quot;description&quot;: &#123; &quot;maxChars&quot;: 1000
+                    &#125;
+                  </div>
+                  <div className="ml-4">&#125;,</div>
+                  <div className="ml-4">&quot;autoResearch&quot;: true</div>
                   <div className="text-muted-foreground">&#125;</div>
                 </div>
               </div>
 
-              <div className="bg-card p-6 rounded-xl shadow-sm border border-border">
+              <div className="bg-card p-6 rounded-xl shadow-sm border border-border overflow-y-hidden">
                 <div className="text-sm text-muted-foreground mb-2">
                   {t.generated}
                 </div>
-                <div className="space-y-3">
-                  {/* todo */}
-                  <div className="h-4 bg-muted rounded w-3/4"></div>
-                  <div className="h-3 bg-muted/60 rounded w-full"></div>
-                  <div className="h-3 bg-muted/60 rounded w-5/6"></div>
-                  <div className="h-3 bg-muted/60 rounded w-4/5"></div>
-                </div>
-                <div className="mt-4 flex items-center text-sm text-green-600 dark:text-green-400">
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  {t.result}
+                <div
+                  className="overflow-y-auto h-64 pr-2"
+                  id="generated-content"
+                >
+                  {renderContent}
                 </div>
               </div>
             </div>
