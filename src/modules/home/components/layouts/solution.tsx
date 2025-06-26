@@ -1,133 +1,76 @@
-'use client';
+"use client";
 
 import { LANG } from "@/enums/global";
 import type { LangProps } from "@/interfaces/component";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import { CheckCircle, Target, Zap } from "lucide-react";
-import { useEffect, useState } from 'react';
-import { TypeAnimation } from 'react-type-animation';
+import { useEffect, useMemo, useState } from "react";
 import {
   BENEFITS_EN,
   BENEFITS_ID,
   SOLUTION_POINTS_EN,
   SOLUTION_POINTS_ID,
 } from "../../constant";
-import { getSolutionDictionary, type SolutionDictionary } from "../../i18n";
+import { getSolutionDictionary } from "../../i18n";
 import SolutionPointCard from "../common/solution-point-card";
-
-interface ContentProps {
-  content: SolutionDictionary['generatedContent'];
-  onFinished: () => void;
-}
-
-const TypewriterContent = ({ content, onFinished }: ContentProps) => {
-  const [isTitleFinished, setIsTitleFinished] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  return (
-    <div className="space-y-4 min-h-[300px]">
-      {isClient ? (
-        <>
-          <h3 className="text-lg font-semibold">
-            <TypeAnimation
-              sequence={[content.title, 500, () => setIsTitleFinished(true)]}
-              wrapper="span"
-              cursor={!isTitleFinished}
-              repeat={0}
-              speed={99}
-            />
-          </h3>
-          {isTitleFinished && (
-            <div className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground">
-              <TypeAnimation
-                sequence={[content.description, 1000, onFinished]}
-                wrapper="div"
-                cursor={true}
-                repeat={0}
-                style={{ whiteSpace: 'pre-line' }}
-                speed={99}
-              />
-            </div>
-          )}
-        </>
-      ) : (
-        <h3 className="text-lg font-semibold">&nbsp;</h3>
-      )}
-    </div>
-  );
-};
-
-const StaticContent = ({ content }: Omit<ContentProps, 'onFinished'>) => {
-  // Simple regex to handle bolding, avoiding complex library conflicts.
-  const createHtml = (text: string) => ({
-    __html: text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'),
-  });
-
-  return (
-    <div className="space-y-4 min-h-[300px]">
-      <h3 className="text-lg font-semibold">{content.title}</h3>
-      <div
-        className="prose prose-sm dark:prose-invert max-w-none text-muted-foreground"
-        style={{ whiteSpace: 'pre-line' }} // This is the key fix
-        dangerouslySetInnerHTML={createHtml(content.description)}
-      />
-    </div>
-  );
-};
-
-const LoadingState = ({ text }: { text: string }) => (
-  <div className="flex flex-col items-center justify-center text-center p-8 min-h-[300px]">
-    <div className="w-6 h-6 border-4 border-dashed rounded-full animate-spin border-primary"></div>
-    <div className="mt-4 text-muted-foreground">{text}</div>
-  </div>
+import useMount from "@/hooks/use-mount";
+import dynamic from "next/dynamic";
+const TypewriterContent = dynamic(
+  () => import("../common/type-writer-content"),
+  { ssr: false }
 );
+const StaticContent = dynamic(() => import("../common/static-content"), {
+  ssr: false,
+});
+const LoadingState = dynamic(() => import("../common/loading-state"), {
+  ssr: false,
+});
 
 export default function Solution({ lang }: LangProps) {
   const t = getSolutionDictionary(lang);
-  const [uiState, setUiState] = useState<'idle' | 'researching' | 'loading' | 'typing' | 'finished'>('idle');
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const [uiState, setUiState] = useState<
+    "idle" | "researching" | "loading" | "typing" | "finished"
+  >("idle");
+  const isClient = useMount();
 
   useEffect(() => {
     if (isClient) {
-      const storedState = localStorage.getItem('contentGenerated');
-      if (storedState === 'true') {
-        setUiState('finished');
+      const storedState = localStorage.getItem("contentGenerated");
+      if (storedState === "true") {
+        setUiState("finished");
       }
     }
   }, [isClient]);
 
   const handleGenerate = () => {
-    setUiState('researching');
+    setUiState("researching");
     setTimeout(() => {
-      setUiState('loading');
+      setUiState("loading");
       setTimeout(() => {
-        setUiState('typing');
+        setUiState("typing");
       }, 1500);
     }, 1500);
   };
 
   const handleTypingFinish = () => {
-    localStorage.setItem('contentGenerated', 'true');
-    setUiState('finished');
+    localStorage.setItem("contentGenerated", "true");
+    setUiState("finished");
   };
 
-  const renderContent = () => {
+  const renderContent = useMemo(() => {
     switch (uiState) {
-      case 'researching':
+      case "researching":
         return <LoadingState text={t.researchingText} />;
-      case 'loading':
+      case "loading":
         return <LoadingState text={t.loadingText} />;
-      case 'typing':
-        return <TypewriterContent content={t.generatedContent} onFinished={handleTypingFinish} />;
-      case 'finished':
+      case "typing":
+        return (
+          <TypewriterContent
+            content={t.generatedContent}
+            onFinished={handleTypingFinish}
+          />
+        );
+      case "finished":
         return (
           <>
             <StaticContent content={t.generatedContent} />
@@ -137,19 +80,22 @@ export default function Solution({ lang }: LangProps) {
             </div>
           </>
         );
-      case 'idle':
+      case "idle":
       default:
         return (
           <div className="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-muted rounded-lg min-h-[300px]">
             <div className="text-muted-foreground mb-4">{t.idleTitle}</div>
-            <Button onClick={handleGenerate}>
+            <Button
+              className="hover:scale-99 transition-all duration-300 shadow hover:shadow-md cursor-pointer hover:opacity-90"
+              onClick={handleGenerate}
+            >
               <Zap className="w-4 h-4 mr-2" />
               {t.buttonText}
             </Button>
           </div>
         );
     }
-  };
+  }, [uiState, t]);
 
   return (
     <section id="home-solution" className="py-24 bg-background">
@@ -196,32 +142,33 @@ export default function Solution({ lang }: LangProps) {
                     &quot;topic&quot;: &quot;Digital Marketing&quot;,
                   </div>
                   <div className="ml-4">
-                    &quot;keywords&quot;: [&quot;SEO&quot;, &quot;content&quot;],
+                    &quot;keywords&quot;: [&quot;SEO&quot;,
+                    &quot;content&quot;],
                   </div>
-                  <div className="ml-4">
-                    &quot;fields&quot;: &#123;
-                  </div>
+                  <div className="ml-4">&quot;fields&quot;: &#123;</div>
                   <div className="ml-8">
                     &quot;title&quot;: &#123; &quot;maxChars&quot;: 100 &#125;,
                   </div>
                   <div className="ml-8">
-                    &quot;description&quot;: &#123; &quot;maxChars&quot;: 1000 &#125;
+                    &quot;description&quot;: &#123; &quot;maxChars&quot;: 1000
+                    &#125;
                   </div>
-                  <div className="ml-4">
-                    &#125;,
-                  </div>
-                  <div className="ml-4">
-                    &quot;autoResearch&quot;: true
-                  </div>
+                  <div className="ml-4">&#125;,</div>
+                  <div className="ml-4">&quot;autoResearch&quot;: true</div>
                   <div className="text-muted-foreground">&#125;</div>
                 </div>
               </div>
 
-              <div className="bg-card p-6 rounded-xl shadow-sm border border-border">
+              <div className="bg-card p-6 rounded-xl shadow-sm border border-border overflow-y-hidden">
                 <div className="text-sm text-muted-foreground mb-2">
                   {t.generated}
                 </div>
-                {renderContent()}
+                <div
+                  className="overflow-y-auto h-64 pr-2"
+                  id="generated-content"
+                >
+                  {renderContent}
+                </div>
               </div>
             </div>
           </aside>
