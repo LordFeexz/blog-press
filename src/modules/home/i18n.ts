@@ -21,6 +21,14 @@ export interface SolutionDictionary {
   apiRequests: string;
   generated: string;
   result: string;
+  researchingText: string;
+  loadingText: string;
+  idleTitle: string;
+  buttonText: string;
+  generatedContent: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface FeatureDictionary {
@@ -85,19 +93,39 @@ const SOLUTION_DICTIONARY: Record<LANG, SolutionDictionary> = {
     badge: "The Solution",
     title: "Blog Press API: Your Content Creation Autopilot",
     subtitle:
-      "Our AI-powered API generates high-quality, SEO-optimized blog articles tailored to your niche. Simply make an API call and get publication-ready content instantly.",
-    apiRequests: "API Requests",
-    generated: "Generated Article",
+      "Our AI-powered API generates high-quality, SEO-optimized blog articles tailored to your needs. No more long content creation times - just results.",
+    apiRequests: "API Request",
+    generated: "Generated Content",
     result: "SEO Optimized & Ready to Publish",
+    researchingText: "Searching for relevant sources & topics...",
+    loadingText: "Analyzing & creating content...",
+    idleTitle: "Click to see the AI magic",
+    buttonText: "Create Content",
+    generatedContent: {
+      title:
+        "It's No Longer About Keywords, But Trust: Dissecting the DNA of SEO Content in the Google E-E-A-T Era",
+      description:
+        "Remember the days when 'SEO optimization' meant stuffing keywords into every paragraph until the writing felt as stiff as a robot? We've all been there. Trying to please Google's algorithm while hoping human readers wouldn't run away. The good news: that era is officially over.\n\nGoogle is no longer 'naive'. The search engine has evolved into an entity obsessed with one thing: user satisfaction. To achieve this, it no longer just counts keywords, but measures 'trust'. This is where the new DNA of modern SEO content is born, known as E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).\n\nThis isn't just a technical acronym; it's a fundamental set of questions for your content:\n\n- **Experience:** Have you actually done or experienced what you're writing about?\n- **Expertise:** Are you a genuine expert in this field?\n- **Authoritativeness:** Do others (other experts) recognize you as a credible source?\n- **Trustworthiness:** Can readers trust you, your site, and the information you provide?\n\nSo, what does this mean for your blog articles, case studies, or landing pages? It means the game has changed. It's no longer about scattering keywords, but about weaving evidence, building authentic narratives, presenting data, and showing, not just telling, that you know what you're talking about. Your content is no longer just bait for Google's bots, but a digital asset that builds long-term reputation and trust. This article is your practical guide to doing just that.",
+    },
   },
   [LANG.ID]: {
-    badge: "Solusi",
-    title: "Blog Press API: Autopilot Pembuatan Konten Anda",
+    badge: "Solusi Konten",
+    title: "Ubah Kebutuhan Anda Menjadi Konten Siap Pakai",
     subtitle:
       "API kami yang digunakan AI menghasilkan artikel blog berkualitas tinggi dan SEO-optimized sesuai dengan kebutuhan Anda. Tidak perlu waktu lama untuk membuat konten konten - hanya hasil.",
     apiRequests: "Request API",
     generated: "Konten yang Dibuat",
-    result: "SEO Optimized & Ready untuk di Publish",
+    result: 'SEO Optimal & Siap Publikasi',
+    researchingText: 'Mencari sumber & topik relevan...',
+    loadingText: 'Menganalisis & membuat konten...',
+    idleTitle: "Klik untuk melihat keajaiban AI",
+    buttonText: "Buat Konten",
+    generatedContent: {
+      title:
+        'Bukan Lagi Soal Keyword, Tapi Kepercayaan: Membedah DNA Konten SEO di Era Google E-E-A-T',
+      description:
+        "Ingat masa-masa di mana 'optimasi SEO' berarti menyebar keyword di setiap paragraf sampai tulisan terasa kaku seperti robot? Kita semua pernah di sana. Berusaha menyenangkan algoritma Google sambil berharap pembaca manusia tidak kabur. Kabar baiknya: masa itu sudah resmi berakhir.\n\nGoogle tidak lagi 'bodoh'. Mesin pencari ini telah berevolusi menjadi entitas yang terobsesi pada satu hal: kepuasan pengguna. Untuk itu, mereka tidak lagi hanya menghitung keyword, tapi mengukur 'kepercayaan'. Di sinilah DNA baru konten SEO modern lahir, yang dikenal sebagai E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).\n\nIni bukan sekadar akronim teknis, ini adalah pertanyaan fundamental untuk konten Anda:\n\n- **Experience:** Apakah Anda benar-benar pernah melakukan atau mengalami apa yang Anda tulis?\n- **Expertise:** Apakah Anda benar-benar seorang ahli di bidang ini?\n- **Authoritativeness:** Apakah orang lain (para ahli lain) mengakui Anda sebagai sumber yang kredibel?\n- **Trustworthiness:** Bisakah pembaca mempercayai Anda, situs Anda, dan informasi yang Anda berikan?\n\nJadi, apa artinya ini untuk artikel blog, studi kasus, atau landing page Anda? Artinya, permainan telah berubah. Ini bukan lagi tentang menabur keyword, tapi tentang menenun bukti, membangun narasi otentik, menyajikan data, dan menunjukkan, bukan hanya mengatakan, bahwa Anda tahu apa yang Anda bicarakan. Konten Anda bukan lagi sekadar umpan untuk robot Google, melainkan aset digital yang membangun reputasi dan kepercayaan jangka panjang. Artikel ini adalah panduan praktis Anda untuk melakukannya.",
+    },
   },
 };
 

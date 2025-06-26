@@ -54,9 +54,6 @@ export default function Hero({ lang }: LangProps) {
                 <div className="ml-4 text-blue-600 dark:text-blue-400">
                   &quot;keywords&quot;: [&quot;SEO&quot;, &quot;content&quot;],
                 </div>
-                <div className="ml-4 text-blue-600 dark:text-blue-400">
-                  &quot;length&quot;: &quot;medium&quot;
-                </div>
                 <div className="text-muted-foreground">&#125;</div>
               </div>
             </div>
