@@ -16,6 +16,7 @@ export default function Root({ children, lang }: ChildrenProps & LangProps) {
       translate="no"
     >
       <body
+        suppressHydrationWarning
         className={cn(
           "text-neutral-900 dark:text-neutral-300 antialiased",
           sora.className,
