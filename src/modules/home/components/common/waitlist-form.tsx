@@ -13,6 +13,7 @@ import { WAITLIST_FORM_ID } from "../../constant";
 import useEarlyBirdPageStore from "../../store";
 import { earlyBirdRegisterAction } from "../../action";
 import type { EarlyBirdRegisterState } from "../../schema";
+import { toast } from "sonner";
 
 const initialState: EarlyBirdRegisterState = {
   email: "",
@@ -35,6 +36,10 @@ function WaitlistForm({ lang }: LangProps) {
   useEffect(() => {
     if (referral && referral !== referalCode) setReferralCode(referral);
   }, [referral, referalCode, setReferralCode]);
+
+  useEffect(() => {
+    if (success) toast.success(t.successToast);
+  }, [success, t.successToast]);
 
   return (
     <form

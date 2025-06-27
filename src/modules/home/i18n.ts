@@ -52,6 +52,7 @@ export interface FormWaitlistDictionary {
   marketingLabel: string;
   btnText: string;
   company: string;
+  successToast: string;
 }
 
 const HERO_DICTIONARY: Record<LANG, HeroDictionary> = {
@@ -115,14 +116,14 @@ const SOLUTION_DICTIONARY: Record<LANG, SolutionDictionary> = {
       "API kami yang digunakan AI menghasilkan artikel blog berkualitas tinggi dan SEO-optimized sesuai dengan kebutuhan Anda. Tidak perlu waktu lama untuk membuat konten konten - hanya hasil.",
     apiRequests: "Request API",
     generated: "Konten yang Dibuat",
-    result: 'SEO Optimal & Siap Publikasi',
-    researchingText: 'Mencari sumber & topik relevan...',
-    loadingText: 'Menganalisis & membuat konten...',
+    result: "SEO Optimal & Siap Publikasi",
+    researchingText: "Mencari sumber & topik relevan...",
+    loadingText: "Menganalisis & membuat konten...",
     idleTitle: "Klik untuk melihat keajaiban AI",
     buttonText: "Buat Konten",
     generatedContent: {
       title:
-        'Bukan Lagi Soal Keyword, Tapi Kepercayaan: Membedah DNA Konten SEO di Era Google E-E-A-T',
+        "Bukan Lagi Soal Keyword, Tapi Kepercayaan: Membedah DNA Konten SEO di Era Google E-E-A-T",
       description:
         "Ingat masa-masa di mana 'optimasi SEO' berarti menyebar keyword di setiap paragraf sampai tulisan terasa kaku seperti robot? Kita semua pernah di sana. Berusaha menyenangkan algoritma Google sambil berharap pembaca manusia tidak kabur. Kabar baiknya: masa itu sudah resmi berakhir.\n\nGoogle tidak lagi 'bodoh'. Mesin pencari ini telah berevolusi menjadi entitas yang terobsesi pada satu hal: kepuasan pengguna. Untuk itu, mereka tidak lagi hanya menghitung keyword, tapi mengukur 'kepercayaan'. Di sinilah DNA baru konten SEO modern lahir, yang dikenal sebagai E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).\n\nIni bukan sekadar akronim teknis, ini adalah pertanyaan fundamental untuk konten Anda:\n\n- **Experience:** Apakah Anda benar-benar pernah melakukan atau mengalami apa yang Anda tulis?\n- **Expertise:** Apakah Anda benar-benar seorang ahli di bidang ini?\n- **Authoritativeness:** Apakah orang lain (para ahli lain) mengakui Anda sebagai sumber yang kredibel?\n- **Trustworthiness:** Bisakah pembaca mempercayai Anda, situs Anda, dan informasi yang Anda berikan?\n\nJadi, apa artinya ini untuk artikel blog, studi kasus, atau landing page Anda? Artinya, permainan telah berubah. Ini bukan lagi tentang menabur keyword, tapi tentang menenun bukti, membangun narasi otentik, menyajikan data, dan menunjukkan, bukan hanya mengatakan, bahwa Anda tahu apa yang Anda bicarakan. Konten Anda bukan lagi sekadar umpan untuk robot Google, melainkan aset digital yang membangun reputasi dan kepercayaan jangka panjang. Artikel ini adalah panduan praktis Anda untuk melakukannya.",
     },
@@ -176,11 +177,13 @@ const WAITLIST_FORM_DICTIONARY: Record<LANG, FormWaitlistDictionary> = {
     company: "Company",
     marketingLabel: " I'd like to receive marketing updates and content tips",
     btnText: "Join the Waitlist",
+    successToast: "Thanks for joining our waitlist!",
   },
   [LANG.ID]: {
     company: "Perusahaan",
     marketingLabel: "Saya ingin menerima pembaruan marketing dan tips konten",
     btnText: "Gabung dengan Daftar Menunggu",
+    successToast: "Terima kasih telah bergabung dengan daftar menunggu kami!",
   },
 };
 
